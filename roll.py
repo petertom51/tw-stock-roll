@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Date, Float
+from sqlalchemy import Column, SmallInteger, String, Date, Float, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import date
@@ -10,30 +10,30 @@ def convert_date(date):
     return [int(num) for num in date.split('/')]
 
 class Roll(Base):
-    __tablename__ = 'rolls'
+    __tablename__ = 'rolls_rolls'
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    identity = Column(Integer)
-    rolldate = Column(Date)
-    startdate = Column(Date)
-    enddate = Column(Date)
-    share = Column(Integer)
-    sell = Column(Float)
+    identity = Column(SmallInteger)
+    roll_date = Column(Date)
+    start_date = Column(Date)
+    end_date = Column(Date)
+    shares = Column(SmallInteger)
+    sell_price = Column(Float)
 
-    def __init__(self, id, name, identity, rolldate, startdate, enddate, share, sell):
+    def __init__(self, id, name, identity, roll_date, start_date, end_date, shares, sell_price):
         self.id = id
         self.name = name
         self.identity = identity
-        self.rolldate = date(*convert_date(rolldate))
-        self.startdate = date(*convert_date(startdate))
-        self.enddate = date(*convert_date(enddate))
-        self.share = share
-        self.sell = sell
+        self.roll_date = date(*convert_date(roll_date))
+        self.start_date = date(*convert_date(start_date))
+        self.end_date = date(*convert_date(end_date))
+        self.shares = shares
+        self.sell_price = sell_price
 
     def __repr__(self):
         return '%s 抽 %s(%s) %s 股. 價格:%.2f. 開始: %s, 截止: %s' % \
-                (self.rolldate, self.name, self.identity, self.share, round(self.sell, 2), self.startdate, self.enddate)
+                (self.roll_date, self.name, self.identity, self.shares, round(self.sell_price, 2), self.start_date, self.end_date)
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///:memory:', echo=True)

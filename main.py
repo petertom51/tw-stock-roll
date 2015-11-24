@@ -6,7 +6,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from roll import Roll
 
-engine = create_engine('sqlite:///./roll.db', echo=True)
+db_path = './roll.db'
+
+engine = create_engine('sqlite:///' + db_path, echo=True)
 Roll.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -29,6 +31,12 @@ with urlopen(target_url) as target:
         # I don't care bond, which code is 6 digits instead of 4, and skip it.
         if len(columns[3].string) > 4:
             continue
+
+        # skip already exist data.
+        last_record = session.query(Roll).order_by("id desc").first()
+        if last_record.id >= int(columns[0].string):
+            print('nothing new')
+            break
 
         # preapre record data
         aroll = Roll(int(columns[0].string), columns[2].string, columns[3].string,
