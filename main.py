@@ -6,8 +6,10 @@ from sqlalchemy import desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from roll import Roll
+import os
 
 db_path = './roll.db'
+os.utime(db_path)
 
 engine = create_engine('sqlite:///' + db_path, echo=True)
 Roll.metadata.create_all(engine)
