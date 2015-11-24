@@ -2,6 +2,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from sqlalchemy import create_engine
+from sqlalchemy import desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from roll import Roll
@@ -33,7 +34,7 @@ with urlopen(target_url) as target:
             continue
 
         # skip already exist data.
-        last_record = session.query(Roll).order_by("id desc").first()
+        last_record = session.query(Roll).order_by(desc("id")).first()
         if last_record.id >= int(columns[0].string):
             print('nothing new')
             break
