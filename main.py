@@ -49,3 +49,4 @@ with urlopen(target_url) as target:
         session.add(aroll)
 
     session.commit()
+session.close()
