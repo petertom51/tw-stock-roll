@@ -37,7 +37,7 @@ with urlopen(target_url) as target:
 
         # skip already exist data.
         last_record = session.query(Roll).order_by(desc("id")).first()
-        if last_record.id >= int(columns[0].string):
+        if last_record is not None and last_record.id >= int(columns[0].string):
             print('nothing new')
             break
 

@@ -10,7 +10,7 @@ def convert_date(date):
     return [int(num) for num in date.split('/')]
 
 class Roll(Base):
-    __tablename__ = 'rolls_rolls'
+    __tablename__ = 'rolls_stock'
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
