@@ -9,6 +9,7 @@ from roll import Roll
 import os
 
 db_path = './roll.db'
+open(db_path, 'a').close()
 os.utime(db_path)
 
 engine = create_engine('sqlite:///' + db_path, echo=True)
