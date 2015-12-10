@@ -19,7 +19,8 @@ Roll.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-target_url = 'http://www.twse.com.tw/ch/announcement/download/2015SUMMARIES.xls'
+year = str(datetime.now().year)
+target_url = 'http://www.twse.com.tw/ch/announcement/download/%sSUMMARIES.xls' % (year)
 
 # Get data from url and store into database
 with urlopen(target_url) as target:
