@@ -56,8 +56,7 @@ with urlopen(target_url) as target:
 # update target reference price
 records = session.query(Roll).filter(Roll.roll_date > datetime.today()).all()
 for record in records:
-    record.price = get_price(record.identity)
-    print(record.price)
+    record.latest_price = get_price(record.identity)
     session.commit()
 
 session.close()

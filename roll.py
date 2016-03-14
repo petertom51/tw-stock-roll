@@ -20,10 +20,10 @@ class Roll(Base):
     end_date = Column(Date)
     shares = Column(SmallInteger)
     sell_price = Column(Float)
-    price = Column(Float)
-    market = Column(String)
+    latest_price = Column(Float)
+    memo = Column(String)
 
-    def __init__(self, id, name, identity, roll_date, start_date, end_date, shares, sell_price, market):
+    def __init__(self, id, name, identity, roll_date, start_date, end_date, shares, sell_price, memo):
         self.id = id
         self.name = name
         self.identity = identity
@@ -32,7 +32,7 @@ class Roll(Base):
         self.end_date = date(*convert_date(end_date))
         self.shares = shares
         self.sell_price = sell_price
-        self.market = market
+        self.memo = memo
 
     def __repr__(self):
         return '%s 抽 %s(%s) %s 股. 價格:%.2f. 開始: %s, 截止: %s' % \
