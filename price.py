@@ -1,13 +1,37 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import requests
+import json
 
+def parse_data(content):
+    json_obj = json.loads(content)
+    print(json_obj)
+
+    lastest_price = None
+    print(json.dumps(json_obj, indent=4))
+    if 'msgArray' in json_obj:
+        try:
+            lastest_price = json_obj['msgArray'][0]['z']
+        except KeyError as e:
+            lastest_price = json_obj['msgArray'][0]['y']
+        except:
+            lastest_price = None
+
+    return lastest_price
 
 def get_price(stock_id):
-    # use cnyes to get the price.
-    target_url = 'http://traderoom.cnyes.com/tse/quote2FB.aspx?code=%s' % stock_id
-    with urlopen(target_url) as target:
-        soup = BeautifulSoup(target.read(), 'html.parser')
-        price = soup.find('td', id='currPrice').string
-        current_price = 0 if price == '--' else float(price)
+    req = requests.session()
+    req.get('http://mis.twse.com.tw/stock/index.jsp')
 
-    return current_price
+    tse_query_url = 'http://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_{}.tw&json=1'
+    otc_query_url = 'http://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=otc_{}.tw&json=1'
+
+    print(tse_query_url.format(stock_id))
+    response = req.get(tse_query_url.format(stock_id))
+    price = parse_data(response.text)
+    if not price:
+        print(otc_query_url.format(stock_id))
+        response = req.get(otc_query_url.format(stock_id))
+        price = parse_data(response.text)
+
+    return price
